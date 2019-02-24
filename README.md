@@ -12,21 +12,42 @@
 
 ### Configure Vagrantfile for Prep
 ```ruby
-Vagrant.configure("2") do |config|
+Vagrant.configure(2) do |config|
+
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
   config.vm.hostname = "ansible-box"
-  
-  # Run setup script
-  config.vm.provision "shell", path: "setup-ansible-on-vagrant.sh"
+
+  # Greeting
+  if Dir.glob("#{File.dirname(__FILE__)}/.vagrant/machines/default/*").empty? || ARGV[0] == 'provision'
+    print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+    print " Hello, #{ENV['USER']}. This script will help you setup your ansible server. \n"
+    print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+    print "+                                                                       +\n"
+    print "+           ANSWER THE NEXT COUPLE OF QUESTIONS TO PROCEED!!!           +\n"
+    print "+                                                                       +\n"
+    print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+
+    # Obtain Variables via User Entry
+    print "Enter your FQDN (Fully Qualified Domain Name, i.e. myproject.com) and press [Enter]: " 
+    HOST = STDIN.gets.chomp
+    print "\nEnter the username of the remote web server you are setting up (i.e. root, user). This will be the user account we will be sshing into! Enter username and press [Enter]: "
+    SSH_REMOTE_USER = STDIN.gets.chomp
+    print "\nWhat is the vagrant machine user account being used to launch ansible playbooks, enter username and press [Enter]: "
+    SSH_LOCAL_USER = STDIN.gets.chomp
+    print "\n"
+
+    # Enable provisioning with a shell script
+    config.vm.provision :shell, :path => "setup-ansible-on-vagrant.sh", :args => [HOST, SSH_REMOTE_USER, SSH_LOCAL_USER]
+  end
 end
 ```
 - **NOTE:** The above configuration file is the vagrant config for your machine, which includes a shell script that will automatically configure ansible on your vagrant machine. This will automate a lot of the process. 
 
 #### Install Ansible
 - `vagrant up` - Starts up machine
-- `vagrant provision` - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, otherwise, this won't work!
+- `vagrant provision` - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, hence there will be a prompt for user entry, otherwise, some things may not work!
 
 ## Prep the Webserver using Ansible
 
