@@ -2,6 +2,10 @@
 
 ## Pre-requisites
 
+### Buy a Domain (or get one for free!)
+- To get a free domain, go to https://www.noip.com/ and register for a site and point it to your public IP address, or use a cloud platform
+- **NOTE:** These domains expire after 30 days, and you can only get up to 3 domains! But, you can renew your domains!
+
 ### Download ubuntu/bionic64 Vagrant Image
 - `vagrant box add ubuntu/bionic64`
 - `vagrant init ubuntu/bionic64`
