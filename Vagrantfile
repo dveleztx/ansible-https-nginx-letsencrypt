@@ -6,11 +6,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  config.vm.network "public_network"
+  config.vm.hostname = "ansible-box"
 
   # Greeting
   if Dir.glob("#{File.dirname(__FILE__)}/.vagrant/machines/default/*").empty? || ARGV[0] == 'provision'
@@ -31,9 +27,7 @@ Vagrant.configure(2) do |config|
     SSH_LOCAL_USER = STDIN.gets.chomp
     print "\n"
 
-    # Enable provisioning with a shell script. Additional provisioners such as
-    # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-    # documentation for more information about their specific syntax and use.
+    # Enable provisioning with a shell script
     config.vm.provision :shell, :path => "setup-ansible-on-vagrant.sh", :args => [HOST, SSH_REMOTE_USER, SSH_LOCAL_USER]
 
   end
