@@ -58,7 +58,8 @@ end
   
 ## Execute Webserver Playbook for Deployment
 - Using my playbook, a lot of the heavy lifting thankfully has been done, if you are curious to see the details of it, feel free to look through the [YML Script](https://github.com/dveleztx/ansible-https-nginx-letsencrypt/blob/master/nginx-https/nginx-setup.yml)
-- Execute the script from the Ansible Server: `sudo ansible-playbook nginx-setup.yml -u root -i /etc/ansible/hosts`
+- The script **MUST** be updated with user criteria, there are **TODO** tags in the YML file for user entry
+- Execute the script from the Ansible Server, once the script has been updated with relevant information: `sudo ansible-playbook nginx-setup.yml -u root -i /etc/ansible/hosts`
 
 Now just explore to the site and it should have your hello world encrypted via HTTPS!
 
