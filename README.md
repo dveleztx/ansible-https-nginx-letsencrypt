@@ -2,48 +2,36 @@
 
 ## Pre-requisites
 
-### Use my Vagrant Box for your Ansible Server (or make your own)
-- [Download](https://app.vagrantup.com/dveleztx/boxes/ansible-server-flaskgunginx) our Vagrant Box from the Cloud
-- `vagrant box add dveleztx/ansible-server-flaskgunginx`
-- `vagrant up`
-- `vagrant ssh`
+### Buy a Domain (or get one for free!)
+- To get a free domain, go to https://www.noip.com/ and register for a site and point it to your public IP address, or use a cloud platform
+- **NOTE:** These domains expire after 30 days, and you can only get up to 3 domains! But, you can renew your domains!
 
-### Configure Vagrantfile
+### Download ubuntu/bionic64 Vagrant Image
+- `vagrant box add ubuntu/bionic64`
+- `vagrant init ubuntu/bionic64`
+
+### Configure Vagrantfile for Prep
 ```ruby
 Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
   config.vm.hostname = "ansible-box"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  config.vm.network "public_network"
+  
+  # Run setup script
+  config.vm.provision "shell", path: "setup-ansible-on-vagrant.sh"
 end
 ```
-- **NOTE:** The above configuration file is the vagrant config for your machine, you'll notice that the network is set to public network, as it explains, your hosting machine will act as a bridge to bring your machine onto the network. You could set the network to be private if you like, if you do, look at Vagrant's documentation to understand private networks.
+- **NOTE:** The above configuration file is the vagrant config for your machine, which includes a shell script that will automatically configure ansible on your vagrant machine. This will automate a lot of the process. 
 
-#### Configure Ansible
-- `sudo vim /etc/ansible/ansible.cfg` - make sure to uncomment the host_key_checking and set it to False per the following:
-```
-[defaults]
-host_key_checking = False
-```
-- Configure what hosts Ansible Server will connect to
-  - Each one of the *target* machines need to have python and SSH setup
-  - `sudo vim /etc/ansible/host` - the following code block is an **example** of a setup
-```
-[webservers]
-192.168.1.10 ansible_ssh_port=22 ansible_ssh_user=vagrant ansible_ssh_private_key_file=/home/vagrant/.ssh/id_rsa
-```
+#### Install Ansible
+- `vagrant up` - Starts up machine
+- `vagrant provision` - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, otherwise, this won't work!
 
 ## Prep the Webserver using Ansible
 
-- Git clone the repo and let's do some work
-- `cd /etc/ansible; sudo mkdir playbooks; cd playbooks`
-- `git clone https://github.com/dveleztx/ansible-https-nginx-letsencrypt.git && cd ansible-https-nginx-letsencrypt`
 - Run this [script](https://github.com/TAMUSA-ACM/ansible-flask-gunicorn-nginx/blob/master/prepare_ansible_target.yml) from your ansible server to setup your target webserver
+- `vagrant ssh` - ssh into your vagrant instance
   - Use the following command to execute ansible execution of the YML script: `sudo ansible-playbook prepare_ansible_target.yml -i /etc/ansible/hosts -u vagrant -k --ask-sudo-pass` - This will prompt you for the password for vagrant, enter the password and this will automatically install python for you, which is needed to do automation. This will also enter your private SSH key into authorized_keys on the target machine, saving you from having to enter creds in the future
   
 ## Execute Webserver Playbook for Deployment
