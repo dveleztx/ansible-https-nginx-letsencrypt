@@ -2,8 +2,8 @@
 #Filename: setup-ansible-on-vagrant.sh
 
 # Variables
-$HOST="cmlink.ddns.net"
-$SSH_REMOTE_USER="dveleztx"
+$HOST="myproject.com"
+$SSH_REMOTE_USER="user"
 $SSH_LOCAL_USER="vagrant"
 
 # Update repo
