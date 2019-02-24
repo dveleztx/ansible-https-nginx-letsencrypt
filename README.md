@@ -9,8 +9,6 @@
 ### Download ubuntu/bionic64 Vagrant Image
 - `vagrant box add ubuntu/bionic64`
 - `vagrant init ubuntu/bionic64`
-- `vagrant up`
-- `vagrant ssh`
 
 ### Configure Vagrantfile for Prep
 ```ruby
@@ -27,11 +25,13 @@ end
 - **NOTE:** The above configuration file is the vagrant config for your machine, which includes a shell script that will automatically configure ansible on your vagrant machine. This will automate a lot of the process. 
 
 #### Install Ansible
+- `vagrant up` - Starts up machine
 - `vagrant provision` - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, otherwise, this won't work!
 
 ## Prep the Webserver using Ansible
 
 - Run this [script](https://github.com/TAMUSA-ACM/ansible-flask-gunicorn-nginx/blob/master/prepare_ansible_target.yml) from your ansible server to setup your target webserver
+- `vagrant ssh` - ssh into your vagrant instance
   - Use the following command to execute ansible execution of the YML script: `sudo ansible-playbook prepare_ansible_target.yml -i /etc/ansible/hosts -u vagrant -k --ask-sudo-pass` - This will prompt you for the password for vagrant, enter the password and this will automatically install python for you, which is needed to do automation. This will also enter your private SSH key into authorized_keys on the target machine, saving you from having to enter creds in the future
   
 ## Execute Webserver Playbook for Deployment
