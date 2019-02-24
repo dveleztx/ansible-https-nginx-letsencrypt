@@ -1,10 +1,10 @@
 #!/bin/bash
 #Filename: setup-ansible-on-vagrant.sh
 
-# Variables
-$HOST="myproject.com"
-$SSH_REMOTE_USER="user"
-$SSH_LOCAL_USER="vagrant"
+# Variables - Hardcoded entries in case they are needed
+#$HOST="myproject.com"
+#$SSH_REMOTE_USER="ubuntu"
+#$SSH_LOCAL_USER="vagrant"
 
 # Update repo
 sudo apt-get update
@@ -19,7 +19,7 @@ sudo pip3 install ansible
 
 # Overwrite ansible.cfg file and hosts file
 sudo echo -e "[defaults]\nhost_key_checking = False" > /etc/ansible/ansible.cfg
-sudo echo -e "[webservers]\n$HOST ansible_ssh_port=22 ansible_ssh_user=$SSH_REMOTE_USER ansible_ssh_private_key_file=/home/$SSH_LOCAL_USER/.ssh/id_rsa" > /etc/ansible/hosts
+sudo echo -e "[webservers]\n$1 ansible_ssh_port=22 ansible_ssh_user=$2 ansible_ssh_private_key_file=/home/$3/.ssh/id_rsa" > /etc/ansible/hosts
 
 # Setup Playbooks Path and Import Scripts
 cd /etc/ansible; sudo mkdir playbooks; cd playbooks
