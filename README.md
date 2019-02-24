@@ -47,7 +47,8 @@ end
 
 #### Install Ansible
 - `vagrant up` - Starts up machine
-- `vagrant provision` - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, hence there will be a prompt for user entry, otherwise, some things may not work!
+- `vagrant provision` 
+   - **NOTE:** The variables defined in the setup-ansible-for-vagrant.sh script needs to be updated with your own relevant information, hence there will be a prompt for user entry, otherwise, some things may not work!
 
 ## Prep the Webserver using Ansible
 
